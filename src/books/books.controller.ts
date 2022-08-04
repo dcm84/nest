@@ -1,29 +1,45 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { BooksService } from './books.service';
 import { BookCreateDto } from './interfaces/book-create.dto';
-import { BookInterface } from './interfaces/book.interface';
+import { Book } from './schemas/book.schema';
 
 @Controller('api/books')
 export class BooksController {
   constructor(private readonly BooksService: BooksService) {}
 
   @Post()
-  async create(@Body() createBookDto: BookCreateDto) {
-    console.log(createBookDto);
-    this.BooksService.create(createBookDto);
+  async create(@Body() creatingBook: BookCreateDto) {
+    this.BooksService.create(creatingBook);
   }
 
   @Get()
-  async findAll(): Promise<BookInterface[]> {
-    return this.BooksService.findAll();
+  async getBooks(): Promise<Book[]> {
+    return this.BooksService.getBooks();
   }
 
   @Get(':id')
-  findOne(
-    @Param('id', new ParseIntPipe())
-    id: number,
-  ) {
-    return this.BooksService.findByID(id);
+  async getBook(@Param('id') id: string): Promise<Book> {
+    return this.BooksService.getBook(id);
+  }
+
+  @Put(':id')
+  async updateBook(
+    @Param('id') id: string,
+    @Body() data: BookCreateDto,
+  ): Promise<Book> {
+    return this.BooksService.updateBook(id, data);
+  }
+
+  @Delete(':id')
+  async deleteBook(@Param('id') id: string): Promise<Book> {
+    return this.BooksService.deleteBook(id);
   }
 }
