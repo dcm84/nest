@@ -7,6 +7,11 @@ const PasswordDB = process.env.DB_PASSWORD || 'password';
 const NameDB = process.env.DB_NAME || 'library';
 const HostDb = process.env.DB_HOST || 'mongodb://localhost:27017/';
 
+import { APP_INTERCEPTOR, APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { ValidationPipe } from './common/pipes/validation.pipe';
+
 @Module({
   imports: [
     MongooseModule.forRoot(HostDb, {
@@ -15,6 +20,20 @@ const HostDb = process.env.DB_HOST || 'mongodb://localhost:27017/';
       dbName: NameDB,
     }),
     BooksModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
   ],
 })
 export class AppModule {}

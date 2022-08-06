@@ -1,5 +1,6 @@
 import {
-  BadRequestException,
+  HttpException,
+  HttpStatus,
   PipeTransform,
   Injectable,
   ArgumentMetadata,
@@ -10,7 +11,7 @@ export class ParseIntPipe implements PipeTransform<string> {
   async transform(value: string, metadata: ArgumentMetadata) {
     const val = parseInt(value, 10);
     if (isNaN(val)) {
-      throw new BadRequestException('Validation failed');
+      throw new HttpException('Parameter must be int', HttpStatus.BAD_REQUEST);
     }
     return val;
   }
