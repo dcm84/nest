@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BooksModule } from './books/books.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 const UserDB = process.env.DB_USERNAME || 'root';
@@ -20,6 +22,8 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
       dbName: NameDB,
     }),
     BooksModule,
+    AuthModule,
+    UsersModule,
   ],
   providers: [
     {
