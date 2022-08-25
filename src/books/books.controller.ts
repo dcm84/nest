@@ -13,21 +13,21 @@ import { Book } from './schemas/book.schema';
 
 @Controller('api/books')
 export class BooksController {
-  constructor(private readonly BooksService: BooksService) {}
+  constructor(private readonly booksService: BooksService) {}
 
   @Post()
   async create(@Body() creatingBook: BookCreateDto) {
-    this.BooksService.create(creatingBook);
+    this.booksService.create(creatingBook);
   }
 
   @Get()
   async getBooks(): Promise<Book[]> {
-    return this.BooksService.getBooks();
+    return this.booksService.getBooks();
   }
 
   @Get(':id')
   async getBook(@Param('id') id: string): Promise<Book> {
-    return this.BooksService.getBook(id);
+    return this.booksService.getBook(id);
   }
 
   @Put(':id')
@@ -35,11 +35,11 @@ export class BooksController {
     @Param('id') id: string,
     @Body() data: BookCreateDto,
   ): Promise<Book> {
-    return this.BooksService.updateBook(id, data);
+    return this.booksService.updateBook(id, data);
   }
 
   @Delete(':id')
   async deleteBook(@Param('id') id: string): Promise<Book> {
-    return this.BooksService.deleteBook(id);
+    return this.booksService.deleteBook(id);
   }
 }

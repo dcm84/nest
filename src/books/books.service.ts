@@ -20,7 +20,7 @@ export class BooksService {
   }
 
   async getBook(id: string): Promise<Book> {
-    return this.bookModel.findById(id).select('-__v').exec();
+    return this.bookModel.findById(id).exec();
   }
 
   async updateBook(id: string, data: BookCreateDto): Promise<Book> {
